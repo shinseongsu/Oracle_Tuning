@@ -31,3 +31,41 @@ SELECT *
  WHERE ITEM_NM LIKE '밀크셰이크%';
  
  
+-- INDEX RANGE SCAN          | ITEM_PK
+SET AUTOTRACE ON 
+SELECT * 
+  FROM ITEM 
+WHERE ITEM_ID BETWEEN 1 AND 10; 
+
+
+
+
+-- INDEX FULL SCAN
+
+SET AUTOTRACE ON 
+SELECT * 
+  FROM ITEM 
+ WHERE ITEM_NM IS NOT NULL;
+ 
+
+ 
+ 
+-- INDEX SKIP SCAN
+drop index item_x01;
+create index item_x01 on item( item_type_cd, item_nm);
+
+SET AUTOTRACE ON 
+SELECT * FROM ITEM WHERE ITEM_NM LIKE '한우%';
+
+
+-- 선두 커럶이 조건절에 없기 때문에 index Skip Scan 이 동작합니다.
+-- 생략된 컬럼 값의 종류가 적을 때는 유용하지만, 값의 종류가 많을 떄 Index Skip Scan으로 탐색하려 한다면 느린 성능으로 바뀔 수 있다.
+
+
+
+
+
+
+
+
+ 
